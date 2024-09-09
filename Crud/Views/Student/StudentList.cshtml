@@ -1,0 +1,95 @@
+﻿@model StudentListViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #6f8d7e;
+            ; /* Dark background for the page */
+            color: #ffffff; /* Light text color */
+        }
+
+        .table {
+            background-color: #ffffff; /* White background for the table */
+            color: #000000; /* Dark text color for readability */
+        }
+
+            .table th, .table td {
+                border-color: #dddddd; /* Light border color */
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+    </style>
+</head>
+<body>
+
+    <h1 class="text-center">Student List</h1>
+
+    <div class="text-center mb-4">
+        <h3>Total Students: @Model.TotalCount</h3>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Subscribe</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Students != null && Model.Students.Any())
+            {
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@student.StudentID</td>
+                        <td>@student.StudentName</td>
+                        <td>@student.Email</td>
+                        <td>@student.Phone</td>
+                        <td>@student.Subscribe </td>
+                        <td>
+                            <a asp-controller="Student" asp-action="EditStudent" asp-route-id="@student.StudentID" class="btn btn-primary">Edit</a>
+                            <form asp-controller="Student" asp-action="DeleteStudent" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@student.StudentID" />
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this student?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No students found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
